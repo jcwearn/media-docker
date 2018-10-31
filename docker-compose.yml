@@ -90,31 +90,27 @@ services:
       - 7878
     restart: always
 
-  ## /Searchers
-
-  ## Helper Apps
-  # replace with https://github.com/causefx/Organizr
-  # Heimdall
-  # heimdall:
-  #   image: linuxserver/heimdall:latest
-  #   container_name: heimdall
-  #   volumes:
-  #     - ${BASE_DIR}/heimdall/config:/config
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=${TIMEZONE}
-  #   labels:
-  #     - traefik.backend=heimdall
-  #     - traefik.frontend.rule=Host:heimdall.${DOMAIN}
-  #     - traefik.docker.network=proxied
-  #   networks:
-  #     - internal
-  #     - proxied
-  #   expose:
-  #     - 80
-  #     - 443
-  #   restart: always
+  ## /Helper Apps
+  #Organizr
+  organizr:
+    image: lsiocommunity/organizr:latest
+    container_name: organizr
+    volumes:
+      - ${BASE_DIR}/organizr/config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TIMEZONE}
+    labels:
+      - traefik.backend=organizr
+      - traefik.frontend.rule=Host:organizr.${DOMAIN}
+      - traefik.docker.network=proxied
+    networks:
+      - internal
+      - proxied
+    expose:
+      - 80
+    restart: always
 
   # Tautulli
   tautulli:
