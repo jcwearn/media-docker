@@ -193,8 +193,6 @@ services:
       - vpn
     expose:
       - 9091
-    ports:
-      - 9091:9091
     restart: always
 
   vpn_proxy:
