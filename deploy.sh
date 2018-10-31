@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform initial setup and configuration of Docker environment for 
+# Perform initial setup and configuration of Docker environment for
 # full media server goodness.
 
 ## FUNCTIONS
@@ -176,13 +176,6 @@ fi
 success "Cockpit set to auto-start."
 
 # traefik pre-configure
-info "Setting up Traefik configuration."
-sed -i "s/#EMAIL_ADDRESS#/${email_address}/g" traefik.toml
-if [[ "$?" -ne "$SUCCESS" ]]
-then
-  err "Traefik email replace failed."
-  exit 1
-fi
 sed -i "s/#DOMAIN#/${domain}/g" traefik.toml
 if [[ "$?" -ne "$SUCCESS" ]]
 then
@@ -199,18 +192,6 @@ sudo cp traefik.toml "${base_dir}"/traefik/traefik.toml > /dev/null
 if [[ "$?" -ne "$SUCCESS" ]]
 then
   err "Could not copy Traefik config."
-  exit 1
-fi
-sudo touch "${base_dir}"/traefik/acme.json > /dev/null
-if [[ "$?" -ne "$SUCCESS" ]]
-then
-  err "Could not create acme.json file."
-  exit 1
-fi
-sudo chmod 600 "${base_dir}"/traefik/acme.json > /dev/null
-if [[ "$?" -ne "$SUCCESS" ]]
-then
-  err "Could not create acme.json file."
   exit 1
 fi
 success "Traefik configuration in place."

@@ -1,4 +1,4 @@
-defaultEntryPoints = ["http","https"]
+defaultEntryPoints = ["http"]
 
 [web]
 address = ":8080"
@@ -6,20 +6,8 @@ address = ":8080"
 [entryPoints]
   [entryPoints.http]
   address = ":80"
-    [entryPoints.http.redirect]
-      entryPoint = "https"
-  [entryPoints.https]
-  address = ":443"
-    [entryPoints.https.tls]
 
 [docker]
 endpoint="unix:///var/run/docker.sock"
 domain="#DOMAIN#"
 watch=true
-
-[acme]
-email = "#EMAIL_ADDRESS#"
-storage = "acme.json"
-entryPoint = "https"
-onHostRule = true
-onDemand = false

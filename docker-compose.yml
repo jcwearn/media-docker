@@ -223,7 +223,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${BASE_DIR}/traefik/traefik.toml:/traefik.toml
-      - ${BASE_DIR}/traefik/acme.json:/acme.json
     labels:
       - traefik.backend=traefik
       - traefik.frontend.rule=Host:traefik.${DOMAIN}
@@ -234,7 +233,6 @@ services:
       - internal
     ports:
       - 80:80
-      - 443:443
     expose:
       - 8080
     restart: always
@@ -246,6 +244,7 @@ services:
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /root/.docker/config.json:/config.json
     command:
       - --cleanup --schedule "0 0 2 * * *"
     networks:
