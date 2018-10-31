@@ -1,6 +1,6 @@
 version: "3"
 services:
-  
+
   ## Media Interfaces
   # Plex Server
   plex:
@@ -38,114 +38,15 @@ services:
       - 32413:32413/udp
       - 32414:32414/udp
     restart: always
-  
-  # Ubooquity
-  ubooquity:
-    image: linuxserver/ubooquity:latest
-    container_name: ubooquity
-    volumes:
-      - ${BASE_DIR}/ubooquity/config:/config
-      - ${MEDIA_DIR}/Books:/books
-      - ${MEDIA_DIR}/Comics:/comics
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=${TIMEZONE}
-    labels:
-      - traefik.docker.network=proxied
-      - traefik.frontend.rule=Host:ubooquity.${DOMAIN}
-      - traefik.port=2202
-      - traefik.default.protocol=http
-      - traefik.admin.frontend.rule=Host:admin-ubooquity.${DOMAIN}
-      - traefik.admin.port=2203
-      - traefil.admin.protocol=http
-    networks:
-      - internal
-      - proxied
-    expose:
-      - 2202
-      - 2203
-    restart: always
 
   ## /Media Interfaces
-
-  ## Downloaders
-  # sabNZBd
-  sabnzbd:
-    image: linuxserver/sabnzbd:latest
-    container_name: sabnzbd
-    volumes:
-      - ${BASE_DIR}/sabnzbd/config:/config
-      - ${DOWNLOAD_DIR}:/downloads
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=${TIMEZONE}
-    labels:
-      - traefik.backend=sabnzbd
-      - traefik.frontend.rule=Host:sab.${DOMAIN}
-      - traefik.docker.network=proxied
-      - traefik.port=8080
-    networks:
-      - internal
-      - proxied
-    expose:
-      - 8080
-    restart: always
-
-# NZBHydra
-  hydra:
-    image: linuxserver/hydra:latest
-    container_name: hydra
-    volumes:
-      - ${BASE_DIR}/hydra/config:/config
-      - ${BASE_DIR}/hydra/blackhole:/downloads
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=${TIMEZONE}
-    labels:
-      - traefik.backend=hydra
-      - traefik.frontend.rule=Host:hydra.${DOMAIN}
-      - traefik.docker.network=proxied
-      - traefik.port=5075
-    networks:
-      - internal
-      - proxied
-    expose:
-      - 5075
-    restart: always
-
-  jackett:
-    image: linuxserver/jackett:latest
-    container_name: jackett
-    volumes:
-      - ${BASE_DIR}/jackett/config:/config
-      - ${BASE_DIR}/jackett/blackhole:/downloads
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=${TIMEZONE}
-    labels:
-      - traefik.backend=jackett
-      - traefik.frontend.rule=Host:jackett.${DOMAIN}
-      - traefik.docker.network=proxied
-      - traefik.port=9117
-    networks:
-      - internal
-      - proxied
-    expose:
-      - 9117
-    restart: always
-  ## / Downloaders
 
   ## Searchers
   # Sonarr
   sonarr:
     image: linuxserver/sonarr:latest
     container_name: sonarr
-    volumes: 
+    volumes:
       - ${BASE_DIR}/sonarr/config:/config
       - ${MEDIA_DIR}/TV:/tv
       - ${DOWNLOAD_DIR}:/downloads
@@ -189,52 +90,31 @@ services:
       - 7878
     restart: always
 
-  # Lidarr
-  lidarr:
-    image: linuxserver/lidarr:latest
-    container_name: lidarr
-    volumes:
-      - ${BASE_DIR}/lidarr/config:/config
-      - ${MEDIA_DIR}/Music:/music
-      - ${DOWNLOAD_DIR}:/downloads
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=${TIMEZONE}
-    labels:
-      - traefik.backend=lidarr
-      - traefik.frontend.rule=Host:lidarr.${DOMAIN}
-      - traefik.docker.network=proxied
-      - traefik.port=8686
-    networks:
-      - proxied
-    expose:
-      - 8686
-    restart: always
   ## /Searchers
 
   ## Helper Apps
+  # replace with https://github.com/causefx/Organizr
   # Heimdall
-  heimdall:
-    image: linuxserver/heimdall:latest
-    container_name: heimdall
-    volumes:
-      - ${BASE_DIR}/heimdall/config:/config
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=${TIMEZONE}
-    labels:
-      - traefik.backend=heimdall
-      - traefik.frontend.rule=Host:heimdall.${DOMAIN}
-      - traefik.docker.network=proxied
-    networks:
-      - internal
-      - proxied
-    expose:
-      - 80
-      - 443
-    restart: always
+  # heimdall:
+  #   image: linuxserver/heimdall:latest
+  #   container_name: heimdall
+  #   volumes:
+  #     - ${BASE_DIR}/heimdall/config:/config
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=${TIMEZONE}
+  #   labels:
+  #     - traefik.backend=heimdall
+  #     - traefik.frontend.rule=Host:heimdall.${DOMAIN}
+  #     - traefik.docker.network=proxied
+  #   networks:
+  #     - internal
+  #     - proxied
+  #   expose:
+  #     - 80
+  #     - 443
+  #   restart: always
 
   # Tautulli
   tautulli:
@@ -258,7 +138,7 @@ services:
     expose:
       - 8181
     depends_on:
-      - plex    
+      - plex
     restart: always
 
   # Ombi
@@ -334,7 +214,7 @@ services:
       - 8080
     restart: always
   ## /Torrenting over VPN
-  
+
   ## Traefik Proxy
   # Traefik
   traefik:
