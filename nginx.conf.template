@@ -1,0 +1,35 @@
+http {
+  server {
+    server_name ${NGINX_HOST} ${NGINX_HOST}.lan;
+    listen ${NGINX_PORT} default_server;
+    listen [::]:${NGINX_PORT} default_server;
+
+    location / {
+      proxy_pass http://organizr:80
+    }
+
+    location /plex {
+      proxy_pass http://plex:32400;
+    }
+
+    location /sonarr {
+      proxy_pass http://sonarr:8989;
+    }
+
+    location /radarr {
+      proxy_pass http://radarr:7878;
+    }
+
+    location /tautulli {
+      proxy_pass http://tautulli:8181;
+    }
+
+    location /ombi {
+      proxy_pass http://ombi:3579;
+    }
+
+    location /transmission {
+      proxy_pass http://transmission:8080;
+    }
+  }
+}
