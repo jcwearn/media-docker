@@ -175,27 +175,6 @@ then
 fi
 success "Cockpit set to auto-start."
 
-# traefik pre-configure
-sed -i "s/#DOMAIN#/${domain}/g" traefik.toml
-if [[ "$?" -ne "$SUCCESS" ]]
-then
-  err "Traefik domain replace failed."
-  exit 1
-fi
-sudo mkdir -p "${base_dir}"/traefik/ > /dev/null
-if [[ "$?" -ne "$SUCCESS" ]]
-then
-  err "Could not create Traefik directory."
-  exit 1
-fi
-sudo cp traefik.toml "${base_dir}"/traefik/traefik.toml > /dev/null
-if [[ "$?" -ne "$SUCCESS" ]]
-then
-  err "Could not copy Traefik config."
-  exit 1
-fi
-success "Traefik configuration in place."
-
 # docker environment set up
 info "Creating external Docker network."
 sudo docker network create proxied &> /dev/null
