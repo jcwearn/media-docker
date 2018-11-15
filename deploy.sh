@@ -182,7 +182,7 @@ success "Cockpit set to auto-start."
 info "Creating external Docker network."
 sudo docker network create proxied &> /dev/null
 info "Building the Docker containers."
-sudo docker-compose up --force-recreate -d
+sudo docker-compose up --force-recreate --remove-orphans -d
 if [[ "$?" -ne "$SUCCESS" ]]
 then
   err "Docker build failed."
