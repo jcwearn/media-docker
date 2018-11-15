@@ -31,15 +31,14 @@ http {
     }
 
     upstream transmission {
-        server transmission:8080;
+        server vpn_proxy:8080;
     }
 
     server {
-        server_name ${NGINX_HOST} ${NGINX_HOST}.lan;
         #listen ${NGINX_PORT} default_server;
         #listen [::]:${NGINX_PORT} default_server;
+        listen ${NGINX_PORT};
         server_name ${NGINX_HOST} ${NGINX_HOST}.lan;
-        listen 80;
 
         location / {
             proxy_pass         http://organizr;
