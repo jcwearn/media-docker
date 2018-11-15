@@ -1,35 +1,53 @@
+worker_processes 1;
+
+events { worker_connections 1024; }
+
 http {
-  server {
-    server_name ${NGINX_HOST} ${NGINX_HOST}.lan;
-    listen ${NGINX_PORT} default_server;
-    listen [::]:${NGINX_PORT} default_server;
 
-    location / {
-      proxy_pass http://organizr:80
+    sendfile on;
+
+    upstream organizr {
+        server organizr:80;
     }
 
-    location /plex {
-      proxy_pass http://plex:32400;
+    upstream plex {
+        server plex:32400;
     }
 
-    location /sonarr {
-      proxy_pass http://sonarr:8989;
+    upstream sonarr {
+        server sonarr:8989;
     }
 
-    location /radarr {
-      proxy_pass http://radarr:7878;
+    upstream radarr {
+        server plex:7878;
     }
 
-    location /tautulli {
-      proxy_pass http://tautulli:8181;
+    upstream tautulli {
+        server tautulli:8181;
     }
 
-    location /ombi {
-      proxy_pass http://ombi:3579;
+    upstream ombi {
+        server ombi:3579;
     }
 
-    location /transmission {
-      proxy_pass http://transmission:8080;
+    upstream transmission {
+        server transmission:8080;
     }
-  }
+
+    server {
+        server_name ${NGINX_HOST} ${NGINX_HOST}.lan;
+        #listen ${NGINX_PORT} default_server;
+        #listen [::]:${NGINX_PORT} default_server;
+        server_name ${NGINX_HOST} ${NGINX_HOST}.lan;
+        listen 80;
+
+        location / {
+            proxy_pass         http://organizr;
+            proxy_redirect     off;
+            proxy_set_header   Host $host;
+            proxy_set_header   X-Real-IP $remote_addr;
+            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host $server_name;
+        }
+    }
 }
