@@ -58,6 +58,9 @@ base_dir=$(get_env_var BASE_DIR .env)
 domain=$(get_env_var DOMAIN .env)
 
 ## EXECUTION
+# Export hostname
+export HOSTNAME=${HOSTNAME}
+
 # Must be root
 if [[ "${UID}" -ne "${ROOT_UID}" ]]
 then
